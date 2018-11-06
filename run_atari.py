@@ -29,7 +29,8 @@ def train(*, env_id, num_env, hps, num_timesteps, seed):
     #                        'PitfallNoFrameskip-v4': 100,
     #                        }[env_id]
     venv.score_multiple = 1
-    venv.record_obs = True if env_id == 'SolarisNoFrameskip-v4' else False
+    venv.record_obs = True
+    # venv.record_obs = True if env_id == 'SolarisNoFrameskip-v4' else False
     ob_space = venv.observation_space
     ac_space = venv.action_space
     gamma = hps.pop('gamma')
@@ -81,6 +82,8 @@ def train(*, env_id, num_env, hps, num_timesteps, seed):
 
     agent.stop_interaction()
 
+    # return agent
+
 
 def add_env_params(parser):
     parser.add_argument('--env', help='environment ID', default='MontezumaRevengeNoFrameskip-v4')
@@ -91,6 +94,7 @@ def add_env_params(parser):
 def main():
     parser = arg_parser()
     add_env_params(parser)
+    parser.add_argument('--save_path', help='Path to save trained model to', default=None, type=str)
     parser.add_argument('--num-timesteps', type=int, default=int(1e12))
     parser.add_argument('--num_env', type=int, default=32)
     parser.add_argument('--use_news', type=int, default=0)
@@ -144,6 +148,16 @@ def main():
     tf_util.make_session(make_default=True)
     train(env_id=args.env, num_env=args.num_env, seed=seed,
         num_timesteps=args.num_timesteps, hps=hps)
+    # model, env = train(env_id=args.env, num_env=args.num_env, seed=seed,
+    #     num_timesteps=args.num_timesteps, hps=hps)
+
+    # env.close()
+
+
+    # if args.save_path is not None and rank == 0:
+    #     save_path = osp.expanduser(args.save_path)
+    #     model.save(save_path)
+
 
 
 if __name__ == '__main__':
