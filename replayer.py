@@ -5,7 +5,7 @@ import os
 import pickle
 import sys
 
-import exptag
+# import exptag
 import ipdb
 import numpy as np
 from atari_wrappers import make_atari, wrap_deepmind
@@ -13,6 +13,13 @@ from run_atari import add_env_params
 
 seen_scores = set()
 
+
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+# from IPython import get_ipython
+# get_ipython().run_line_magic('matplotlib', 'qt5')
 
 class EpisodeIterator(object):
     def __init__(self, filenames):
@@ -185,7 +192,9 @@ class Animation(object):
 
         ani = animation.FuncAnimation(self.fig, draw_frame_i, blit=False, interval=1,
                                       repeat=False)
+        print("Trying to plot now!!!")
         plt.show()
+        print("Plotted done")
         plt.close()
 
 
@@ -204,30 +213,35 @@ if __name__ == '__main__':
 
 
     args = parser.parse_args().__dict__
-    folder = exptag.get_last_experiment_folder_by_tag(args['tag'])
+    print(args['tag'])
+    # folder = exptag.get_last_experiment_folder_by_tag(args['tag'])
+    folder = '/Users/alundberg/mycode/pitfall/logs'
+    #
+    # def date_from_folder(folder):
+    #     assert folder.startswith('openai-')
+    #     date_started = folder[len('openai-'):]
+    #     return datetime.datetime.strptime(date_started, "%Y-%m-%d-%H-%M-%S-%f")
 
-    def date_from_folder(folder):
-        assert folder.startswith('openai-')
-        date_started = folder[len('openai-'):]
-        return datetime.datetime.strptime(date_started, "%Y-%m-%d-%H-%M-%S-%f")
+    # date_started = date_from_folder(os.path.basename(folder))
+    # machine_dir = os.path.dirname(folder)
+    # machine_dir = '/Users/alundberg/mycode/pitfall/logs'
+    # if machine_dir[-4:-1]=='-00':
+    #     all_machine_dirs = glob.glob(machine_dir[:-1]+'*')
+    # else:
+    #     all_machine_dirs = [machine_dir]
+    # other_folders = []
+    # for machine_dir in all_machine_dirs:
+    #     this_machine_other_folders = os.listdir(machine_dir)
+    #     this_machine_other_folders = [f_ for f_ in this_machine_other_folders
+    #                                   if f_.startswith("openai-") and abs((date_from_folder(f_) - date_started).total_seconds()) < 3]
+    #     this_machine_other_folders = [os.path.join(machine_dir, f_) for f_ in this_machine_other_folders]
+    #     other_folders.extend(this_machine_other_folders)
+    #
+    # filenames = [glob.glob(os.path.join(folder, "videos_*.pk")) for f_ in other_folders]
+    # as    sert all(len(files_) == 1 for files_ in filenames), filenames
+    # filenames = [files_[0] for files_ in filenames]
 
-    date_started = date_from_folder(os.path.basename(folder))
-    machine_dir = os.path.dirname(folder)
-    if machine_dir[-4:-1]=='-00':
-        all_machine_dirs = glob.glob(machine_dir[:-1]+'*')
-    else:
-        all_machine_dirs = [machine_dir]
-    other_folders = []
-    for machine_dir in all_machine_dirs:
-        this_machine_other_folders = os.listdir(machine_dir)
-        this_machine_other_folders = [f_ for f_ in this_machine_other_folders
-                                      if f_.startswith("openai-") and abs((date_from_folder(f_) - date_started).total_seconds()) < 3]
-        this_machine_other_folders = [os.path.join(machine_dir, f_) for f_ in this_machine_other_folders]
-        other_folders.extend(this_machine_other_folders)
-
-    filenames = [glob.glob(os.path.join(f_, "videos_*.pk")) for f_ in other_folders]
-    assert all(len(files_) == 1 for files_ in filenames), filenames
-    filenames = [files_[0] for files_ in filenames]
+    filenames = ['/Users/alundberg/mycode/pitfall/logs/videos_0.pk']
 
     env = make_atari(args['env'], max_episode_steps=args['max_episode_steps'])
     if args['display'] == 'agent':

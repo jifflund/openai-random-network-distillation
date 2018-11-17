@@ -333,7 +333,13 @@ class PpoAgent(object):
                      'ret_ext': rets_ext,
                      }
         if self.I.venvs[0].record_obs:
+            print("Going to record now")
             to_record['obs'] = self.I.buf_obs[None]
+            print("to_record")
+            for keys, values in to_record.items():
+                print(keys)
+                print(values)
+
         self.recorder.record(bufs=to_record,
                              infos=self.I.buf_epinfos)
 

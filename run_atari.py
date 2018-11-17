@@ -12,6 +12,7 @@ from policies.cnn_policy_param_matched import CnnPolicy
 from ppo_agent import PpoAgent
 from utils import set_global_seeds
 from vec_env import VecFrameStack
+import os.path as osp
 
 
 def train(*, env_id, num_env, hps, num_timesteps, seed):
@@ -82,7 +83,7 @@ def train(*, env_id, num_env, hps, num_timesteps, seed):
 
     agent.stop_interaction()
 
-    # return agent
+    return agent
 
 
 def add_env_params(parser):
@@ -148,15 +149,15 @@ def main():
     tf_util.make_session(make_default=True)
     train(env_id=args.env, num_env=args.num_env, seed=seed,
         num_timesteps=args.num_timesteps, hps=hps)
-    # model, env = train(env_id=args.env, num_env=args.num_env, seed=seed,
+    # model = train(env_id=args.env, num_env=args.num_env, seed=seed,
     #     num_timesteps=args.num_timesteps, hps=hps)
 
     # env.close()
 
 
-    # if args.save_path is not None and rank == 0:
-    #     save_path = osp.expanduser(args.save_path)
-    #     model.save(save_path)
+    if args.save_path is not None and rank == 0:
+        save_path = osp.expanduser(args.save_path)
+        model.save(save_path)
 
 
 

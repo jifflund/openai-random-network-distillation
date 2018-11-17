@@ -1,0 +1,47 @@
+start with run_atari
+    params
+    setup logs & gpus
+    dictionary with more default args
+    make tensorflow (can be interaction tf session)
+    train
+    save model (work?)
+
+train
+    setup vectorized env ???
+        setup atari environment
+            based on a monitored subprocess that including logging results
+
+        setups up params about environment
+        sets up stacked observations (to replay them?
+        based on an async environment (ABC) (abstract base class)
+
+            step_wait (which uses np.roll) to walk through the the stacked observation
+
+    pick either cnn or rnn ppo policy
+    creates a PPOAgent
+        includes a partial function that includes a stochastic policy function
+        includes dynamic_bonus option (does what?)
+
+    agent.step look like it holds logic that calculates the rewards
+
+
+agent.step
+    ?
+
+
+PPOAgent
+    ?
+
+
+
+long term policy exploration
+    by comparing visited video to random
+
+    subsample to X frames so can do comparison accross images
+        sample once 10 second (see if rnn can handle) * 20min * 60 = 120 frames
+
+    use part of (policy? or actor?) as the features
+        optionally optical flow
+    feed these into RNN
+        compare to random network
+
